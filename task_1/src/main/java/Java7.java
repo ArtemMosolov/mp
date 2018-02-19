@@ -10,7 +10,7 @@ public class Java7 {
         //task_1();
         //task_2();
         //task_3();
-
+        //task_4();
         task_5();
 
     }
@@ -112,35 +112,26 @@ public class Java7 {
     }
 
     private static void task_4() {
-        Map<SEX, List<Map<Integer, List<String>>>> usersMap = new LinkedHashMap<SEX, List<Map<Integer, List<String>>>>();
 
-        Map<Integer, List<String>> mapA = new LinkedHashMap<>();
-        List<String> nameA = Arrays.asList("vasia", "petia", "dima");
-        List<String> nameB = Arrays.asList("ivan", "anton", "victor");
-        mapA.put(5, nameA);
-        mapA.put(10, nameA);
+        List<User> userList = new ArrayList<>(Arrays.asList(
+                new User(1L, "Vasia", 5, SEX.FEMALE),
+                new User(2L, "Petia", 8, SEX.MALE),
+                new User(3L, "Katia", 10, SEX.ANIMAL),
+                new User(4L, "Olia", 17, SEX.FEMALE),
+                new User(5L, "Vika", 18, SEX.MALE),
+                new User(6L, "Dima", 19, SEX.ANIMAL),
+                new User(7L, "Dura", 20, SEX.FEMALE),
+                new User(8L, "Typa", 5, SEX.MALE),
+                new User(9L, "Java", 8, SEX.ANIMAL)
+        ));
 
-        Map<Integer, List<String>> mapB = new LinkedHashMap<>();
-        List<String> nameC = Arrays.asList("volodymyr", "sasha", "oleh");
-        List<String> nameD = Arrays.asList("artem", "yurii", "petro");
-        mapB.put(20, nameC);
-        mapB.put(30, nameD);
+//        погрупувати юзерів по статі і віку: мапа де ключем є стать а значенням ліст мапів де кллючем є вік а значенням ліст імен
 
-        Map<Integer, List<String>> mapC = new LinkedHashMap<>();
-        List<String> nameE = Arrays.asList("vika", "katia", "olia");
-        List<String> nameF = Arrays.asList("ivanka", "krystia", "natalia");
-        mapC.put(5, nameE);
-        mapC.put(10, nameF);
-
-        Map<Integer, List<String>> mapD = new LinkedHashMap<>();
-        List<String> nameH = Arrays.asList("veronika", "maruna", "gala");
-        List<String> nameG = Arrays.asList("oksana", "kate", "sasha");
-        mapD.put(20, nameH);
-        mapD.put(30, nameG);
-
-
-        usersMap.put(SEX.MALE, new LinkedList<Map<Integer, List<String>>>(Arrays.asList(mapA, mapB)));
-        usersMap.put(SEX.FEMALE, new LinkedList<Map<Integer, List<String>>>(Arrays.asList(mapC, mapD)));
+        userList.stream()
+                .collect(Collectors.groupingBy(User::getSex,
+                        Collectors.groupingBy(User::getAge,
+                                Collectors.mapping(User::getNick, Collectors.toList()))))
+        .forEach((k, v) -> System.out.println(k + " " + v));
 
 
 //        usersMap.entrySet().stream()
@@ -175,6 +166,8 @@ public class Java7 {
                 new User(9L, "Katia", 3, SEX.ANIMAL, new Credit(9L, new BigDecimal(6436345)))
         ));
 
+//        сформувати мапу де ключем буде юзер а валюшкою список його непогашених кредитів + тільки для повнолітніх юзерів
+
         usersMap.entrySet().stream()
                 .map(Map.Entry::getValue)
                 .flatMap(List::stream)
@@ -182,7 +175,9 @@ public class Java7 {
                 .collect(Collectors.groupingBy(User::getNick, Collectors.mapping(User::getCredit, Collectors.toList())))
                 .forEach((k, v) -> System.out.println(k + " KREDIT " + v));
 
-
+//        RESULT
+//        Petia KREDIT [Credit{id=4, debt=345645}, Credit{id=5, debt=456346}, Credit{id=6, debt=456346}]
+//        Vasia KREDIT [Credit{id=1, debt=234234}, Credit{id=2, debt=4563}, Credit{id=3, debt=324234}]
 
     }
 
