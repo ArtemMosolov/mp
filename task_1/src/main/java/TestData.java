@@ -13,8 +13,8 @@ public class TestData {
                 new User(5L, "Vika", 18, SEX.MALE),
                 new User(6L, "Dima", 19, SEX.ANIMAL),
                 new User(7L, "Dura", 20, SEX.FEMALE),
-                new User(8L, "Typa", 5, SEX.MALE),
-                new User(9L, "Java", 8, SEX.ANIMAL)
+                new User(8L, "Vasia", 5, SEX.MALE),
+                new User(9L, "Petia", 8, SEX.ANIMAL)
         ));
         return userList;
     }

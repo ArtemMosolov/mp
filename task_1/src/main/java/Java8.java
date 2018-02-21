@@ -10,7 +10,7 @@ public class Java8 {
         //task_1();
         //task_2();
         //task_3();
-        //task_4();
+        task_4();
         //task_5();
 
     }
@@ -27,9 +27,13 @@ public class Java8 {
                 .forEach((k, v) -> System.out.println(k + " " + v));
 
 //        RESULT
-//        Petia [Petia, Petia, Petia]
-//        Katia [Katia, Katia, Katia]
-//        Vasia [Vasia, Vasia, Vasia]
+//        Dura [Dura]
+//        Olia [Olia]
+//        Petia [Petia, Petia]
+//        Vika [Vika]
+//        Katia [Katia]
+//        Dima [Dima]
+//        Vasia [Vasia, Vasia]
     }
 
     private static void task_2() {
@@ -100,7 +104,10 @@ public class Java8 {
 //                .map(c -> c.entrySet())
 //                .collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.mapping(Map.Entry::getValue, Collectors.toList())));
 
-
+//        RESULT
+//        ANIMAL {19=[Dima], 8=[Petia], 10=[Katia]}
+//        MALE {18=[Vika], 5=[Vasia], 8=[Petia]}
+//        FEMALE {17=[Olia], 20=[Dura], 5=[Vasia]}
 
     }
 
