@@ -10,8 +10,8 @@ public class Java8 {
         //task_1();
         //task_2();
         //task_3();
-        task_4();
-        //task_5();
+        //task_4();
+        task_5();
 
     }
 
@@ -113,38 +113,30 @@ public class Java8 {
 
     private static void task_5() {
 
-        Map<String, List<User>> usersMap = new LinkedHashMap<String, List<User>>();
+        List<User> userList = TestData.getTestData();
 
-        usersMap.put("Vasia", Arrays.asList(
-                new User(1L, "Vasia", 22, SEX.FEMALE, new Credit(1L, new BigDecimal(234234))),
-                new User(2L, "Vasia", 23, SEX.MALE, new Credit(2L, new BigDecimal(4563))),
-                new User(3L, "Vasia", 24, SEX.ANIMAL, new Credit(3L, new BigDecimal(324234)))
-        ));
+        //        сформувати мапу де ключем буде юзер а валюшкою список його непогашених кредитів + тільки для повнолітніх юзерів
 
-        usersMap.put("Petia", Arrays.asList(
-                new User(4L, "Petia", 44, SEX.FEMALE, new Credit(4L, new BigDecimal(345645))),
-                new User(5L, "Petia", 33, SEX.MALE, new Credit(5L, new BigDecimal(456346))),
-                new User(6L, "Petia", 22, SEX.ANIMAL, new Credit(6L, new BigDecimal(456346)))
-        ));
+//        userList.stream()
+//                .filter(user -> user.getAge() > 18)
+//                .collect(Collectors.groupingBy(User::getNick, Collectors.mapping(User::getCredit, Collectors.toList())))
+//                .forEach((k, v) -> System.out.println(k + " " + v));
 
-        usersMap.put("Katia", Arrays.asList(
-                new User(7L, "Katia", 1, SEX.FEMALE, new Credit(7L, new BigDecimal(43563))),
-                new User(8L, "Katia", 2, SEX.MALE, new Credit(8L, new BigDecimal(34563))),
-                new User(9L, "Katia", 3, SEX.ANIMAL, new Credit(9L, new BigDecimal(6436345)))
-        ));
-
-//        сформувати мапу де ключем буде юзер а валюшкою список його непогашених кредитів + тільки для повнолітніх юзерів
-
-        usersMap.entrySet().stream()
-                .map(Map.Entry::getValue)
-                .flatMap(List::stream)
+        userList.stream()
                 .filter(user -> user.getAge() > 18)
-                .collect(Collectors.groupingBy(User::getNick, Collectors.mapping(User::getCredit, Collectors.toList())))
+                .map(user -> {
+                    User userWithDebt = user;
+                    userWithDebt.setCredit(user.getCredit().stream()
+                            .filter(balance -> balance.getBalance() > 0)
+                            .collect(Collectors.toList()));
+                    return userWithDebt;
+                })
+                .collect(Collectors.groupingBy(Function.identity(),  Collectors.mapping(User::getCredit, Collectors.toList())))
                 .forEach((k, v) -> System.out.println(k + " " + v));
 
 //        RESULT
-//        Petia [Credit{id=4, debt=345645}, Credit{id=5, debt=456346}, Credit{id=6, debt=456346}]
-//        Vasia [Credit{id=1, debt=234234}, Credit{id=2, debt=4563}, Credit{id=3, debt=324234}]
+//        User{id=7, nick='Dura', age=20, sex=FEMALE, credit=[Credit{balance=1500}, Credit{balance=500}, Credit{balance=700}]} [[Credit{balance=1500}, Credit{balance=500}, Credit{balance=700}]]
+//        User{id=6, nick='Dima', age=19, sex=ANIMAL, credit=[]} [[]]
 
     }
 

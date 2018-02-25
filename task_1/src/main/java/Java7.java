@@ -27,14 +27,13 @@ public class Java7 {
             if(userMap.containsKey(userName)) {
                 userMap.get(userName).add(user);
             } else {
-                userMap.put(userName, new LinkedList<>(Arrays.asList(user)));
+                List<User> list = new ArrayList<>();
+                list.add(user);
+                userMap.put(userName, list);
             }
         }
 
-        //userMap.forEach((k, v) -> System.out.println(k + " " + v));
-        for(String key : userMap.keySet()) {
-            System.out.println(key + " " + userMap.get(key));
-        }
+        System.out.println(userMap);
 
 //        RESULT
 //        Petia [User{id=2, nick='Petia', age=8, sex=MALE, credit=null}, User{id=9, nick='Petia', age=8, sex=ANIMAL, credit=null}]
@@ -47,21 +46,17 @@ public class Java7 {
     }
 
     private static void task_2() {
-
         List<User> userList = TestData.getTestData();
 
 //        	отримати ліст юзерів яким більше 18 років
 
-        List<User> adultUserList = new LinkedList<>();
+        List<User> adultUserList = new ArrayList<>();
 
         for (User user : userList) {
             if(user.getAge() > 18) {
                 adultUserList.add(user);
+                System.out.println(user);
             }
-        }
-
-        for (User user : adultUserList) {
-            System.out.println(user);
         }
 
 //        RESULT
@@ -75,30 +70,22 @@ public class Java7 {
 
 //        погрупувати юзерів по віку: мапа де ключем є вік а занченням ліст імен + тільки неповнолітні юзери
 
-        List<User> adultUserList = new LinkedList<>();
-
-        for (User user : userList) {
-            if(user.getAge() < 18) {
-                adultUserList.add(user);
-            }
-        }
-
         Map<Integer, List<User>> userMap = new HashMap<>();
 
-        for(User user : adultUserList) {
+        for(User user : userList) {
             Integer userAge = user.getAge();
-            if(userMap.containsKey(userAge)) {
-                userMap.get(userAge).add(user);
-            } else {
-                userMap.put(userAge, new LinkedList<>(Arrays.asList(user)));
+            if(user.getAge() < 18) {
+                if(userMap.containsKey(userAge)) {
+                    userMap.get(userAge).add(user);
+                } else {
+                    List<User> list = new ArrayList<>();
+                    list.add(user);
+                    userMap.put(userAge, list);
+                }
             }
         }
 
-        for(Integer key : userMap.keySet()) {
-            System.out.println(key + " " + userMap.get(key));
-        }
-
-
+        System.out.println(userMap);
 
 //        RESULT :
 //        17 [User{id=4, nick='Olia', age=17, sex=FEMALE, credit=null}]
@@ -114,76 +101,29 @@ public class Java7 {
 
 //        погрупувати юзерів по статі і віку: мапа де ключем є стать а значенням ліст мапів де кллючем є вік а значенням ліст імен
 
-//        userList.stream()
-//                .collect(Collectors.groupingBy(User::getSex,
-//                        Collectors.groupingBy(User::getAge,
-//                                Collectors.mapping(User::getNick, Collectors.toList()))))
-//                .forEach((k, v) -> System.out.println(k + " " + v));
-
-        Set<SEX> sex = new HashSet<>();
-        for(User user : userList) {
-            sex.add(user.getSex());
-        }
-        List<SEX> gender = new ArrayList<>(sex);
-
-        Map<Integer, List<User>> userMap = new HashMap<>();
+        Map<SEX, Map<Integer, List<String>>> resultMap  = new HashMap<>();
 
         for(User user : userList) {
-            Integer userAge = user.getAge();
-            if(userMap.containsKey(userAge)) {
-                userMap.get(userAge).add(user);
+            Map<Integer, List<String>> genderMap = resultMap.get(user.getSex());
+            if(genderMap == null) {
+                genderMap = new HashMap<>();
+                List<String> names = new ArrayList<>();
+                names.add(user.getNick());
+                genderMap.put(user.getAge(), names);
+                resultMap.put(user.getSex(), genderMap);
             } else {
-                userMap.put(userAge, new LinkedList<>(Arrays.asList(user)));
-            }
-        }
-
-        Map<SEX, List<Map<Integer, List<String>>>> resultMap  = new HashMap<>();
-
-        for(Integer key : userMap.keySet()) {
-            List<User> users = userMap.get(key);
-            for (User usr : users) {
-                SEX userSex = usr.getSex();
-                if (resultMap.containsKey(userSex)) {
-                    List<Map<Integer, List<String>>> mapList = resultMap.get(userSex);
-                    if(mapList != null) {
-                        for (Map<Integer, List<String>> userAges : mapList) {
-                            for (Integer age : userMap.keySet()) {
-                                List<String> usList = userAges.get(age);
-                                if(usList != null) {
-                                    usList.add(usr.getNick());
-                                } else {
-                                    usList = new ArrayList<>();
-                                    usList.add(usr.getNick());
-                                    userAges.put(age, usList);
-                                }
-                            }
-                        }
-                    } else {
-                        resultMap.put(userSex, new ArrayList<Map<Integer, List<String>>>());
-                    }
+                List<String> names = genderMap.get(user.getAge());
+                if(names == null) {
+                    names = new ArrayList<>();
+                    names.add(user.getNick());
+                    genderMap.put(user.getAge(), names);
                 } else {
-                    List<String> names = new ArrayList<>();
-                    Map<Integer, List<String>> ages = new HashMap<>();
-                    ages.put(usr.getAge(), names);
-                    List<Map<Integer, List<String>>> list = new ArrayList<>();
-                    list.add(ages);
-                    resultMap.put(userSex, list);
+                    genderMap.get(user.getAge()).add(user.getNick());
                 }
             }
         }
 
-        for(SEX userSex : resultMap.keySet()) {
-            List<Map<Integer, List<String>>> listOfAges = resultMap.get(userSex);
-            for(Map<Integer, List<String>> listOfMaps : listOfAges) {
-                for(Integer ages : listOfMaps.keySet()) {
-                    List<String> names = listOfMaps.get(ages);
-                    for(String name : names) {
-                        System.out.println(userSex + " " + name);
-                    }
-                }
-             }
-        }
-
+        System.out.println(resultMap);
 
 //        RESULT
 //        ANIMAL {19=[Dima], 8=[Petia], 10=[Katia]}
@@ -194,40 +134,34 @@ public class Java7 {
 
     private static void task_5() {
 
-        Map<String, List<User>> usersMap = new LinkedHashMap<String, List<User>>();
-
-        usersMap.put("Vasia", Arrays.asList(
-                new User(1L, "Vasia", 22, SEX.FEMALE, new Credit(1L, new BigDecimal(234234))),
-                new User(2L, "Vasia", 23, SEX.MALE, new Credit(2L, new BigDecimal(4563))),
-                new User(3L, "Vasia", 24, SEX.ANIMAL, new Credit(3L, new BigDecimal(324234)))
-        ));
-
-        usersMap.put("Petia", Arrays.asList(
-                new User(4L, "Petia", 44, SEX.FEMALE, new Credit(4L, new BigDecimal(345645))),
-                new User(5L, "Petia", 33, SEX.MALE, new Credit(5L, new BigDecimal(456346))),
-                new User(6L, "Petia", 22, SEX.ANIMAL, new Credit(6L, new BigDecimal(456346)))
-        ));
-
-        usersMap.put("Katia", Arrays.asList(
-                new User(7L, "Katia", 1, SEX.FEMALE, new Credit(7L, new BigDecimal(43563))),
-                new User(8L, "Katia", 2, SEX.MALE, new Credit(8L, new BigDecimal(34563))),
-                new User(9L, "Katia", 3, SEX.ANIMAL, new Credit(9L, new BigDecimal(6436345)))
-        ));
+        List<User> userList = TestData.getTestData();
 
 //        сформувати мапу де ключем буде юзер а валюшкою список його непогашених кредитів + тільки для повнолітніх юзерів
 
 
+        Map<User, List<Credit>> resultMap = new HashMap<>();
 
-//        usersMap.entrySet().stream()
-//                .map(Map.Entry::getValue)
-//                .flatMap(List::stream)
-//                .filter(user -> user.getAge() > 18)
-//                .collect(Collectors.groupingBy(User::getNick, Collectors.mapping(User::getCredit, Collectors.toList())))
-//                .forEach((k, v) -> System.out.println(k + " " + v));
+        for(User user : userList) {
+            if(user.getAge() > 18) {
+                List<Credit> credits = resultMap.get(user);
+                if(credits == null) {
+                    credits = user.getCredit();
+                    List<Credit> debt = new ArrayList<>();
+                    for(Credit credit : credits) {
+                        if(credit.getBalance() > 0) {
+                            debt.add(credit);
+                        }
+                    }
+                    resultMap.put(user, debt);
+                }
+            }
+        }
+
+        System.out.println(resultMap);
 
 //        RESULT
-//        Petia [Credit{id=4, debt=345645}, Credit{id=5, debt=456346}, Credit{id=6, debt=456346}]
-//        Vasia [Credit{id=1, debt=234234}, Credit{id=2, debt=4563}, Credit{id=3, debt=324234}]
+//        User{id=7, nick='Dura', age=20, sex=FEMALE, credit=[Credit{balance=500}, Credit{balance=700}]} [[Credit{balance=500}, Credit{balance=700}]]
+//        User{id=6, nick='Dima', age=19, sex=ANIMAL, credit=[]} [[]]
 
     }
 

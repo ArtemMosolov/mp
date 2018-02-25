@@ -6,15 +6,15 @@ import java.util.List;
 public class TestData {
     public static List<User>  getTestData() {
         List<User> userList = new ArrayList<>(Arrays.asList(
-                new User(1L, "Vasia", 5, SEX.FEMALE),
-                new User(2L, "Petia", 8, SEX.MALE),
-                new User(3L, "Katia", 10, SEX.ANIMAL),
-                new User(4L, "Olia", 17, SEX.FEMALE),
-                new User(5L, "Vika", 18, SEX.MALE),
-                new User(6L, "Dima", 19, SEX.ANIMAL),
-                new User(7L, "Dura", 20, SEX.FEMALE),
-                new User(8L, "Vasia", 5, SEX.MALE),
-                new User(9L, "Petia", 8, SEX.ANIMAL)
+                new User(1L, "Vasia", 5, SEX.FEMALE, Arrays.asList(new Credit(100), new Credit(500), new Credit(0))),
+                new User(2L, "Petia", 8, SEX.MALE, Arrays.asList(new Credit(-500), new Credit(200), new Credit(1000))),
+                new User(3L, "Katia", 10, SEX.ANIMAL, Arrays.asList(new Credit(0), new Credit(0), new Credit(0))),
+                new User(4L, "Olia", 17, SEX.FEMALE, Arrays.asList(new Credit(2000), new Credit(-300), new Credit(0))),
+                new User(5L, "Vika", 18, SEX.MALE, Arrays.asList(new Credit(500), new Credit(0), new Credit(0))),
+                new User(6L, "Dima", 19, SEX.ANIMAL, Arrays.asList(new Credit(0), new Credit(0), new Credit(0))),
+                new User(7L, "Dura", 20, SEX.FEMALE, Arrays.asList(new Credit(-100), new Credit(500), new Credit(700))),
+                new User(8L, "Vasia", 5, SEX.MALE, Arrays.asList(new Credit(300), new Credit(0), new Credit(0))),
+                new User(9L, "Petia", 8, SEX.ANIMAL, Arrays.asList(new Credit(800), new Credit(500), new Credit(20)))
         ));
         return userList;
     }
@@ -26,7 +26,7 @@ class User {
     private String nick;
     private int age;
     private SEX sex;
-    private Credit credit;
+    private List<Credit> credit;
 
     public User() {}
 
@@ -37,7 +37,7 @@ class User {
         this.sex = sex;
     }
 
-    public User(Long id, String name, int age, SEX sex, Credit credit) {
+    public User(Long id, String name, int age, SEX sex, List<Credit> credit) {
         this.id = id;
         this.nick = name;
         this.age = age;
@@ -45,11 +45,11 @@ class User {
         this.credit = credit;
     }
 
-    public Credit getCredit() {
+    public List<Credit> getCredit() {
         return credit;
     }
 
-    public void setCredit(Credit credit) {
+    public void setCredit(List<Credit> credit) {
         this.credit = credit;
     }
 
@@ -95,15 +95,17 @@ class User {
         if (age != user.age) return false;
         if (id != null ? !id.equals(user.id) : user.id != null) return false;
         if (nick != null ? !nick.equals(user.nick) : user.nick != null) return false;
-        return sex == user.sex;
+        if (sex != user.sex) return false;
+        return credit != null ? credit.equals(user.credit) : user.credit == null;
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (nick != null ? nick.hashCode() : 0);
-        result = 31 * result + (int) age;
+        result = 31 * result + age;
         result = 31 * result + (sex != null ? sex.hashCode() : 0);
+        result = 31 * result + (credit != null ? credit.hashCode() : 0);
         return result;
     }
 
@@ -125,20 +127,18 @@ enum SEX {
 
 class Credit {
 
-    private Long id;
-    private BigDecimal debt;
+    private Integer balance;
 
-    public Credit(Long id, BigDecimal debt) {
-        this.id = id;
-        this.debt = debt;
+    public Credit(Integer balance) {
+        this.balance = balance;
     }
 
-    @Override
-    public String toString() {
-        return "Credit{" +
-                "id=" + id +
-                ", debt=" + debt +
-                '}';
+    public Integer getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Integer balance) {
+        this.balance = balance;
     }
 
     @Override
@@ -148,30 +148,18 @@ class Credit {
 
         Credit credit = (Credit) o;
 
-        if (id != null ? !id.equals(credit.id) : credit.id != null) return false;
-        return debt != null ? debt.equals(credit.debt) : credit.debt == null;
+        return balance != null ? balance.equals(credit.balance) : credit.balance == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (debt != null ? debt.hashCode() : 0);
-        return result;
+        return balance != null ? balance.hashCode() : 0;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public BigDecimal getDebt() {
-        return debt;
-    }
-
-    public void setDebt(BigDecimal debt) {
-        this.debt = debt;
+    @Override
+    public String toString() {
+        return "Credit{" +
+                "balance=" + balance +
+                '}';
     }
 }
