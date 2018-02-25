@@ -1,7 +1,9 @@
-import java.math.BigDecimal;
+import com.google.common.base.MoreObjects;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class TestData {
     public static List<User>  getTestData() {
@@ -85,39 +87,57 @@ class User {
         this.sex = sex;
     }
 
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//
+//        User user = (User) o;
+//
+//        if (age != user.age) return false;
+//        if (id != null ? !id.equals(user.id) : user.id != null) return false;
+//        if (nick != null ? !nick.equals(user.nick) : user.nick != null) return false;
+//        if (sex != user.sex) return false;
+//        return credit != null ? credit.equals(user.credit) : user.credit == null;
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        int result = id != null ? id.hashCode() : 0;
+//        result = 31 * result + (nick != null ? nick.hashCode() : 0);
+//        result = 31 * result + age;
+//        result = 31 * result + (sex != null ? sex.hashCode() : 0);
+//        result = 31 * result + (credit != null ? credit.hashCode() : 0);
+//        return result;
+//    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         User user = (User) o;
-
-        if (age != user.age) return false;
-        if (id != null ? !id.equals(user.id) : user.id != null) return false;
-        if (nick != null ? !nick.equals(user.nick) : user.nick != null) return false;
-        if (sex != user.sex) return false;
-        return credit != null ? credit.equals(user.credit) : user.credit == null;
+        return age == user.age &&
+                Objects.equals(id, user.id) &&
+                Objects.equals(nick, user.nick) &&
+                sex == user.sex &&
+                Objects.equals(credit, user.credit);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (nick != null ? nick.hashCode() : 0);
-        result = 31 * result + age;
-        result = 31 * result + (sex != null ? sex.hashCode() : 0);
-        result = 31 * result + (credit != null ? credit.hashCode() : 0);
-        return result;
+        return Objects.hash(id, nick, age, sex, credit);
     }
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", nick='" + nick + '\'' +
-                ", age=" + age +
-                ", sex=" + sex +
-                ", credit=" + credit +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("nick", nick)
+                .add("age", age)
+                .add("sex", sex)
+                .add("credit", credit)
+                .toString();
     }
 }
 
@@ -145,21 +165,19 @@ class Credit {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Credit credit = (Credit) o;
-
-        return balance != null ? balance.equals(credit.balance) : credit.balance == null;
+        return Objects.equals(balance, credit.balance);
     }
 
     @Override
     public int hashCode() {
-        return balance != null ? balance.hashCode() : 0;
+        return Objects.hash(balance);
     }
 
     @Override
     public String toString() {
-        return "Credit{" +
-                "balance=" + balance +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("balance", balance)
+                .toString();
     }
 }
