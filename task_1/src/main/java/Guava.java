@@ -18,7 +18,6 @@ public class Guava {
 		// task_2();
 		 // task_3();
 		// task_4();
-		 // task_5();
 
 	}
 
@@ -69,33 +68,6 @@ public class Guava {
 	}
 
 	private static void task_4() {
-
-		List<User> userList = TestData.getTestData();
-
-		Map<SEX, Map<Integer, List<String>>> resultMap = new HashMap<>();
-
-		for (User user : userList) {
-			Map<Integer, List<String>> genderMap = resultMap.get(user.getSex());
-			if (genderMap == null) {
-				genderMap = new HashMap<>();
-				List<String> names = new ArrayList<>();
-				names.add(user.getNick());
-				genderMap.put(user.getAge(), names);
-				resultMap.put(user.getSex(), genderMap);
-			} else {
-				List<String> names = genderMap.get(user.getAge());
-				if (names == null) {
-					names = new ArrayList<>();
-					names.add(user.getNick());
-					genderMap.put(user.getAge(), names);
-				} else {
-					genderMap.get(user.getAge()).add(user.getNick());
-				}
-			}
-		}
-	}
-
-	private static void task_5() {
 		List<User> userList = TestData.getTestData();
 
 		Predicate<User> adultsPredicate = new Predicate<User>() {
