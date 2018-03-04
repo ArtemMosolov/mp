@@ -7,7 +7,7 @@ public class Node<T> {
 
     private T data = null;
 
-    private List<Node<T>> children = new ArrayList<>();
+    private final List<Node<T>> children = new ArrayList<>();
 
     private Node<T> parent = null;
 
@@ -15,7 +15,7 @@ public class Node<T> {
         this.data = data;
     }
 
-    public Node<T> addChild(Node<T> child) {
+    public synchronized Node<T> addChild(Node<T> child) {
         child.setParent(this);
         this.children.add(child);
         return child;
