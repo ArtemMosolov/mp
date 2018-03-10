@@ -1,18 +1,18 @@
 package com.mentorship.program.factory.threads;
 
-import com.mentorship.program.data.Node;
-import com.mentorship.program.factory.file.Searchable;
-
 import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class WorkStealingPool extends ThreadSeeker {
+import com.mentorship.program.data.Node;
+import com.mentorship.program.factory.file.Searchable;
+
+public class FixedThreadPool extends ThreadSeeker {
 
     private final ExecutorService es;
 
-    public WorkStealingPool() {
-        es = Executors.newWorkStealingPool();
+    public FixedThreadPool() {
+        es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     }
 
     public void search(File fileLocation, String searchValue, Searchable searchable, Node<String> searchTree) {

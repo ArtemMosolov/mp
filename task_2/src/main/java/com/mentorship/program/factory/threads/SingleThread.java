@@ -7,8 +7,7 @@ import java.io.File;
 
 public class SingleThread extends ThreadSeeker {
 
-
-    @Override
+	@Override
     public void findFile(File fileLocation, String searchValue, Searchable searchable, Node<String> searchTree) {
         search(fileLocation, searchValue, searchable, searchTree);
     }

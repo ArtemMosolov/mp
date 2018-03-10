@@ -12,7 +12,6 @@ public abstract class ThreadSeeker {
     public void search(File fileLocation, String searchValue, Searchable searchable, Node<String> searchTree) {
         for (File fileEntry : fileLocation.listFiles()) {
             if (fileEntry.isDirectory()) {
-                //searchTree.addChild(new Node<>(appender + fileEntry.getName()));
             	//searchTree.addChild(appender + fileEntry.getName());
                 //search(fileEntry, searchValue, searchable, searchTree,  appender + appender);
                 findFile(fileEntry, searchValue, searchable, searchTree.addChild(fileEntry.getName()));
