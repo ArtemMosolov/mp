@@ -9,7 +9,7 @@ import java.nio.file.attribute.UserPrincipal;
 public class SearchByFileOwner implements Searchable {
 
     @Override
-    public boolean search(File file, String criteria) {
+    public boolean check(File file, String criteria) {
         FileOwnerAttributeView ownerAttributeView = Files.getFileAttributeView(file.toPath(), FileOwnerAttributeView.class);
         try {
             UserPrincipal owner = ownerAttributeView.getOwner();

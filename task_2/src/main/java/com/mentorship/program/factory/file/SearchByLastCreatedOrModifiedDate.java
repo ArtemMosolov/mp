@@ -13,7 +13,7 @@ public class SearchByLastCreatedOrModifiedDate implements Searchable {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
-    public boolean search(File file, String criteria) {
+    public boolean check(File file, String criteria) {
         try {
             LocalDateTime datetime = LocalDateTime.parse(criteria);
             BasicFileAttributes attr = Files.readAttributes(file.toPath(), BasicFileAttributes.class);

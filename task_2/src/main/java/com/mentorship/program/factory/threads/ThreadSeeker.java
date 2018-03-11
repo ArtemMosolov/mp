@@ -35,7 +35,7 @@ public abstract class ThreadSeeker {
 					findFile(fileEntry, searchValue, searchable, node);
 					//queue.add(node);
 				} else {
-					if (searchable.search(fileEntry, searchValue)) {
+					if (searchable.check(fileEntry, searchValue)) {
 						// add & stop all threads
 						flag.set(true);
 						Node<String> node = searchTree.addChild(fileEntry.getName());

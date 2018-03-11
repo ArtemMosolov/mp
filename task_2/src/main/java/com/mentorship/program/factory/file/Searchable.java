@@ -4,6 +4,6 @@ import java.io.File;
 
 public interface Searchable {
 
-    boolean search(File file, String criteria);
+    boolean check(File file, String criteria);
 
 }
