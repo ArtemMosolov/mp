@@ -5,6 +5,8 @@ import java.util.List;
 
 // https://stackoverflow.com/questions/3522454/java-tree-data-structure#17490124
 
+// https://www.javagists.com/java-tree-data-structure
+
 public class Node<T> {
 
     private T data;
