@@ -24,36 +24,35 @@ public class Node<T> {
 //        return child;
 //    }
     
-	public Node<T> addChild(T child) {
+	public synchronized Node<T> addChild(T child) {
 		Node<T> childNode = new Node<>(child);
 		childNode.parent = this;
 		children.add(childNode);
 		return childNode;
 	}
 
-    public void addChildren(List<Node<T>> children) {
+    public synchronized void addChildren(List<Node<T>> children) {
         children.forEach(each -> each.setParent(this));
         this.children.addAll(children);
     }
 
-    public List<Node<T>> getChildren() {
+    public synchronized List<Node<T>> getChildren() {
         return children;
     }
 
-    public T getData() {
+    public synchronized T getData() {
         return data;
     }
 
-    public void setData(T data) {
+    public synchronized void setData(T data) {
         this.data = data;
     }
 
-    private void setParent(Node<T> parent) {
+    private synchronized void setParent(Node<T> parent) {
         this.parent = parent;
     }
 
-    public Node<T> getParent() {
+    public synchronized Node<T> getParent() {
         return parent;
     }
-
 }
