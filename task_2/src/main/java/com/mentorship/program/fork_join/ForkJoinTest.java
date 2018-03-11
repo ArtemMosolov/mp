@@ -13,7 +13,7 @@ public class ForkJoinTest {
 		ForkJoinPool pool = new ForkJoinPool();
 		Node<String> tree = new Node<>("test_dir");
 		Searchable checker = SearchFileFactory.getSearchCriteria("byName");
-		FolderProcessor system = new FolderProcessor("/projects/MP/task_2/test_dir", "txt", checker, tree);
+		FolderProcessor system = new FolderProcessor("/projects/MP/task_2/test_dir", "test_file.txt", checker, tree);
 		pool.execute(system);
 
 		do {
