@@ -1,0 +1,49 @@
+test_dir
+├── folder_1
+│   ├── f3.txt
+│   ├── folder_1_1
+│   │   ├── f2.txt
+│   │   ├── folder_1_1_1
+│   │   │   ├── f1.txt
+├── folder_2
+│   ├── folder_2_1_1
+│   │   ├── test_file.txt
+├── folder_3
+│   ├── folder_1_1
+│   │   ├── folder_1_1_1
+│   │   │   ├── new_file.txt
+
+single thread, no thread interruption when file is found
+============================
+
+test_dir
+├── folder_1
+│   ├── f3.txt
+│   ├── folder_1_1
+│   │   ├── f2.txt
+│   │   ├── folder_1_1_1
+│   │   │   ├── f1.txt
+├── folder_2
+│   ├── folder_2_1_1
+│   │   ├── test_file.txt
+├── folder_3
+
+thread pool, when threads are interrupted when file is found
+
+=============================
+
+├── folder_2
+│   ├── folder_2_1_1
+│   │   ├── test_file.txt
+├── folder_3
+│   ├── folder_1_1
+│   │   ├── folder_1_1_1
+│   │   │   ├── new_file.txt
+├── folder_1
+│   ├── folder_1_1
+│   │   ├── folder_1_1_1
+│   │   │   ├── f1.txt
+│   │   ├── f2.txt
+│   ├── f3.txt
+
+streams, cannot build tree in correct order
